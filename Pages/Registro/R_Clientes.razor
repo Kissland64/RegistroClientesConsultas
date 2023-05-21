@@ -1,54 +1,85 @@
 @page "/RegistroClientes"
+@page "/RegistroClientes/{ClienteId:int}"
 @using System.ComponentModel.DataAnnotations
+@inject ClientesBLL clientesBLL
 
-<h3>Clientes</h3>
+<h3></h3>
 
-<form>
-    <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <input type="text" class="form-control" @bind="@cliente.Nombre" />
-        <ValidationMessage For="@(() => cliente.Nombre)" />
-    </div>
-    <div class="form-group">
-        <label for="telefono">Telefono:</label>
-        <input type="text" class="form-control" @bind="@cliente.Telefono" />
-        <ValidationMessage For="@(() => cliente.Telefono)" />
-    </div>
-    <div class="form-group">
-        <label for="celular">Celular:</label>
-        <input type="text" class="form-control" @bind="@cliente.Celular" />
-        <ValidationMessage For="@(() => cliente.Celular)" />
-    </div>
-    <div class="form-group">
-        <label for="rnc">RNC:</label>
-        <input type="text" class="form-control" @bind="@cliente.RNC" />
-        <ValidationMessage For="@(() => cliente.RNC)" />
-    </div>
-    <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" @bind="@cliente.Email" />
-        <ValidationMessage For="@(() => cliente.Email)" />
-    </div>
-    <div class="form-group">
-        <label for="direccion">Dirección:</label>
-        <input type="text" class="form-control" @bind="@cliente.Direccion" />
-        <ValidationMessage For="@(() => cliente.Direccion)" />
+<EditForm Model="cliente">
+    
+    <div class = "card">
+
+        <div class = "card-header">
+            <h1>Registro de clientes</h1>
+        </div>
+        <div class = "card-body">
+        
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control" @bind="@cliente.Nombre" />
+                <ValidationMessage For="@(() => cliente.Nombre)" />
+            </div>
+            <div class="form-group">
+                <label for="telefono">Telefono:</label>
+                <input type="text" class="form-control" @bind="@cliente.Telefono" />
+                <ValidationMessage For="@(() => cliente.Telefono)" />
+            </div>
+            <div class="form-group">
+                <label for="celular">Celular:</label>
+                <input type="text" class="form-control" @bind="@cliente.Celular" />
+                <ValidationMessage For="@(() => cliente.Celular)" />
+            </div>
+            <div class="form-group">
+                <label for="rnc">RNC:</label>
+                <input type="text" class="form-control" @bind="@cliente.RNC" />
+                <ValidationMessage For="@(() => cliente.RNC)" />
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" @bind="@cliente.Email" />
+                <ValidationMessage For="@(() => cliente.Email)" />
+            </div>
+            <div class="form-group">
+                <label for="direccion">Dirección:</label>
+                <input type="text" class="form-control" @bind="@cliente.Direccion" />
+                <ValidationMessage For="@(() => cliente.Direccion)" />
     </div>
 
-    <button type="button" class="btn btn-primary" @onclick="AgregarCliente">Agregar Cliente</button>
-</form>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo</button>
+            <button type="button" class="btn btn-success" @onclick="AgregarCliente">Agregar Cliente</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar cliente</button>
+            
+        </div>
+    </div>
+
+
+</EditForm>
 
 @code {
+    [Parameter]
+    public int ClienteId { get; set; }
     private List<Clientes> clientes = new List<Clientes>();
     private Clientes cliente = new Clientes();
 
     private void AgregarCliente()
     {
-        if (ValidarCliente(cliente))
-        {
-            clientes.Add(cliente);
-            cliente = new Clientes();
+        if (clientesBLL.Guardar(cliente)){
+            Nuevo();
         }
+    }
+
+    private void Eliminar()
+    {
+        if (clientesBLL.Eliminar(cliente)){
+            Nuevo();
+        }
+    }
+
+    private void Nuevo()
+    {
+        cliente = new Clientes();
     }
 
     private bool ValidarCliente(Clientes cliente)
@@ -77,7 +108,7 @@
             Console.WriteLine("Ya existe un cliente con el mismo RNC.");
             return false;
         }
-
-        return true;
+        else
+            return true;
     }
 }
