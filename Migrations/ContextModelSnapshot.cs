@@ -15,6 +15,39 @@ namespace RegistroClientesConsultas.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
+            modelBuilder.Entity("Clientes", b =>
+                {
+                    b.Property<int>("ClienteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Celular")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RNC")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Telefono")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ClienteId");
+
+                    b.ToTable("Clientes");
+                });
+
             modelBuilder.Entity("Prioridades", b =>
                 {
                     b.Property<int>("PrioridadId")
