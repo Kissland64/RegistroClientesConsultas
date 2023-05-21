@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-//Bll
+using System.Linq.Expressions;
+
 public class PrioridadesBLL
 {
-    private PrioridadesContext _context;
+    private Context _context;
     
-    public PrioridadesBLL(PrioridadesContext context)
+    public PrioridadesBLL(Context context)
     {
         _context = context;
     }
@@ -18,7 +19,6 @@ public class PrioridadesBLL
     {
         _context.Prioridades.Add(prioridades);
         int guardado = _context.SaveChanges();
-        _context.Entry(prioridades).State = EntityState.Detached;
         return guardado > 0;
     }
 
@@ -26,7 +26,6 @@ public class PrioridadesBLL
     {
         _context.Update(prioridades);
         int modificado = _context.SaveChanges();
-        _context.Entry(prioridades).State = EntityState.Detached;
         return modificado > 0;
     }
 
@@ -42,16 +41,23 @@ public class PrioridadesBLL
         }
     }
 
+    public Prioridades? Buscar(int PrioridadId)
+    {
+        return _context.Prioridades
+            .AsNoTracking()
+            .SingleOrDefault(p => p.PrioridadId == PrioridadId);
+    }
+
     public bool Eliminar(Prioridades prioridades)
     {
         _context.Prioridades.Remove(prioridades);
         int eliminado = _context.SaveChanges();
-        _context.Entry(prioridades).State = EntityState.Detached;
         return eliminado > 0;
     }
 
-    public Prioridades? Buscar(int PrioridadId)
-    {
-        return _context.Prioridades.AsNoTracking().SingleOrDefault(p => p.PrioridadId == PrioridadId);
+    public List<Prioridades> Listar(Expression<Func<Prioridades, bool>> Criterio){
+        return _context.Prioridades
+            .Where(Criterio)
+            .AsNoTracking().ToList();
     }
 }

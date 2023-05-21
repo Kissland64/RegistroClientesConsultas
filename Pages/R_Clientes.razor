@@ -1,0 +1,145 @@
+@page "/clientes"
+@using System.ComponentModel.DataAnnotations
+
+<h3>Clientes</h3>
+
+<form>
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" @bind="@cliente.Nombre" />
+        <ValidationMessage For="@(() => cliente.Nombre)" />
+    </div>
+    <div class="form-group">
+        <label for="telefono">Teléfono:</label>
+        <input type="text" class="form-control" @bind="@cliente.Telefono" />
+        <ValidationMessage For="@(() => cliente.Telefono)" />
+    </div>
+    <div class="form-group">
+        <label for="celular">Celular:</label>
+        <input type="text" class="form-control" @bind="@cliente.Celular" />
+        <ValidationMessage For="@(() => cliente.Celular)" />
+    </div>
+    <div class="form-group">
+        <label for="rnc">RNC:</label>
+        <input type="text" class="form-control" @bind="@cliente.RNC" />
+        <ValidationMessage For="@(() => cliente.RNC)" />
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" @bind="@cliente.Email" />
+        <ValidationMessage For="@(() => cliente.Email)" />
+    </div>
+    <div class="form-group">
+        <label for="direccion">Dirección:</label>
+        <input type="text" class="form-control" @bind="@cliente.Direccion" />
+        <ValidationMessage For="@(() => cliente.Direccion)" />
+    </div>
+
+    <button type="button" class="btn btn-primary" @onclick="AgregarCliente">Agregar Cliente</button>
+</form>
+
+<hr />
+
+<h4>Lista de Clientes:</h4>
+@if (clientes.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ClienteId</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Celular</th>
+                <th>RNC</th>
+                <th>Email</th>
+                <th>Dirección</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in clientes)
+            {
+                <tr>
+                    <td>@cliente.ClienteId</td>
+                    <td>@cliente.Nombre</td>
+                    <td>@cliente.Telefono</td>
+                    <td>@cliente.Celular</td>
+                    <td>@cliente.RNC</td>
+                    <td>@cliente.Email</td>
+                    <td>@cliente.Direccion</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay clientes registrados.</p>
+}
+
+@code {
+    private List<Cliente> clientes = new List<Cliente>();
+    private Cliente cliente = new Cliente();
+
+    private void AgregarCliente()
+    {
+        if (ValidarCliente(cliente))
+        {
+            clientes.Add(cliente);
+            cliente = new Cliente();
+        }
+    }
+
+    private bool ValidarCliente(Cliente cliente)
+    {
+        var context = new ValidationContext(cliente, serviceProvider: null, items: null);
+        var results = new List<ValidationResult>();
+
+        if (!Validator.TryValidateObject(cliente, context, results, validateAllProperties: true))
+        {
+            foreach (var validationResult in results)
+            {
+                Console.WriteLine(validationResult.ErrorMessage);
+            }
+
+            return false;
+        }
+
+        if (clientes.Any(c => c.Nombre == cliente.Nombre))
+        {
+            Console.WriteLine("Ya existe un cliente con el mismo nombre.");
+            return false;
+        }
+
+        if (clientes.Any(c => c.RNC == cliente.RNC))
+        {
+            Console.WriteLine("Ya existe un cliente con el mismo RNC.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public class Cliente
+    {
+        public int ClienteId { get; set; }
+
+        [Required(ErrorMessage = "El nombre del cliente es obligatorio.")]
+        public string Nombre { get; set; }
+
+        [Required(ErrorMessage = "El teléfono del cliente es obligatorio.")]
+        public string Telefono { get; set; }
+
+        [Required(ErrorMessage = "El celular del cliente es obligatorio.")]
+        public string Celular { get; set; }
+
+        [Required(ErrorMessage = "El RNC del cliente es obligatorio.")]
+        public string RNC { get; set; }
+
+        [Required(ErrorMessage = "El email del cliente es obligatorio.")]
+        [EmailAddress(ErrorMessage = "El email ingresado no es válido.")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "La dirección del cliente es obligatoria.")]
+        public string Direccion { get; set; }
+    }
+}

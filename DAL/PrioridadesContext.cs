@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 
-public class PrioridadesContext : DbContext
+public class Context : DbContext
 {
+    public DbSet<Clientes> Clientes { get; set; }
     public DbSet<Prioridades> Prioridades { get; set; }
 
-    public PrioridadesContext(DbContextOptions<PrioridadesContext> options) : base(options)
+    public Context(DbContextOptions<Context> options) : base(options)
     {
         
     }
