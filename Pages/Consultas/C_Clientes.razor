@@ -1,4 +1,4 @@
-@page "/Clientes"
+@page "/ClientesConsultas"
 
 @inject ClientesBLL clientesBLL
 
@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Clientes)
+        @foreach (var item in L_Clientes)
         {
             <tr>
                 <td>@item.ClienteId</td>
@@ -31,10 +31,10 @@
 </table>
 
 @code {
-    public List<Clientes> Clientes { get; set; } = new List<Clientes>();
+    public List<Clientes> L_Clientes { get; set; } = new List<Clientes>();
 
     protected override void OnInitialized()
     {
-        Clientes = clientesBLL.Listar(c => true);
+        L_Clientes = clientesBLL.Listar(c => true);
     }
 }
