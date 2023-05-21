@@ -9,5 +9,7 @@ public class Prioridades
     public string? Descripcion { get; set; }
 
     [Required(ErrorMessage = "Es obligatorio tener dias compromiso")]
+
+    [Range(0, 31)]
     public int DiasCompromiso { get; set; }
 }
