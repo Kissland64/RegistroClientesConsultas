@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 public class PrioridadesBLL
 {
-    private PrioridadesContext _context;
+    private Context _context;
     
-    public PrioridadesBLL(PrioridadesContext context)
+    public PrioridadesBLL(Context context)
     {
         _context = context;
     }
@@ -52,6 +52,8 @@ public class PrioridadesBLL
 
     public Prioridades? Buscar(int PrioridadId)
     {
-        return _context.Prioridades.AsNoTracking().SingleOrDefault(p => p.PrioridadId == PrioridadId);
+        return _context.Prioridades
+            .AsNoTracking()
+            .SingleOrDefault(p => p.PrioridadId == PrioridadId);
     }
 }
