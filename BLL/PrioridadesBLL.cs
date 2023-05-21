@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-
+//Bll
 public class PrioridadesBLL
 {
     private PrioridadesContext _context;
