@@ -38,44 +38,6 @@
     <button type="button" class="btn btn-primary" @onclick="AgregarCliente">Agregar Cliente</button>
 </form>
 
-<hr />
-
-<h4>Lista de Clientes:</h4>
-@if (clientes.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ClienteId</th>
-                <th>Nombre</th>
-                <th>Teléfono</th>
-                <th>Celular</th>
-                <th>RNC</th>
-                <th>Email</th>
-                <th>Dirección</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var cliente in clientes)
-            {
-                <tr>
-                    <td>@cliente.ClienteId</td>
-                    <td>@cliente.Nombre</td>
-                    <td>@cliente.Telefono</td>
-                    <td>@cliente.Celular</td>
-                    <td>@cliente.RNC</td>
-                    <td>@cliente.Email</td>
-                    <td>@cliente.Direccion</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No hay clientes registrados.</p>
-}
-
 @code {
     private List<Clientes> clientes = new List<Clientes>();
     private Clientes cliente = new Clientes();
