@@ -77,19 +77,19 @@ else
 }
 
 @code {
-    private List<Cliente> clientes = new List<Cliente>();
-    private Cliente cliente = new Cliente();
+    private List<Clientes> clientes = new List<Clientes>();
+    private Clientes cliente = new Clientes();
 
     private void AgregarCliente()
     {
         if (ValidarCliente(cliente))
         {
             clientes.Add(cliente);
-            cliente = new Cliente();
+            cliente = new Clientes();
         }
     }
 
-    private bool ValidarCliente(Cliente cliente)
+    private bool ValidarCliente(Clientes cliente)
     {
         var context = new ValidationContext(cliente, serviceProvider: null, items: null);
         var results = new List<ValidationResult>();
@@ -117,29 +117,5 @@ else
         }
 
         return true;
-    }
-
-    public class Cliente
-    {
-        public int ClienteId { get; set; }
-
-        [Required(ErrorMessage = "El nombre del cliente es obligatorio.")]
-        public string Nombre { get; set; }
-
-        [Required(ErrorMessage = "El teléfono del cliente es obligatorio.")]
-        public string Telefono { get; set; }
-
-        [Required(ErrorMessage = "El celular del cliente es obligatorio.")]
-        public string Celular { get; set; }
-
-        [Required(ErrorMessage = "El RNC del cliente es obligatorio.")]
-        public string RNC { get; set; }
-
-        [Required(ErrorMessage = "El email del cliente es obligatorio.")]
-        [EmailAddress(ErrorMessage = "El email ingresado no es válido.")]
-        public string Email { get; set; }
-
-        [Required(ErrorMessage = "La dirección del cliente es obligatoria.")]
-        public string Direccion { get; set; }
     }
 }
