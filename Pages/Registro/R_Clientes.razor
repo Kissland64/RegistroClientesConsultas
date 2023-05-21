@@ -13,6 +13,11 @@
             <h1>Registro de clientes</h1>
         </div>
         <div class = "card-body">
+
+            <div class="input-group mb-3">
+            <InputNumber @bind-Value = "cliente.ClienteId" class="form-control" />
+            <button @onclick = "Buscar" class="btn btn-outline-secondary oi oi-magnifying-glass" type="button" id="button-addon2"></button>
+            </div>
         
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
@@ -80,6 +85,14 @@
     private void Nuevo()
     {
         cliente = new Clientes();
+    }
+
+    public void Buscar()
+    {
+        var ClienteEncontrado = clientesBLL.Buscar(cliente.ClienteId);
+        if(ClienteEncontrado != null){
+            cliente = ClienteEncontrado;
+        }
     }
 
     private bool ValidarCliente(Clientes cliente)
