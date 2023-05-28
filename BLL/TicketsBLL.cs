@@ -51,7 +51,7 @@ public class TicketsBLL
             .FirstOrDefault(s => s.TicketsId == TicketsId);
     }
 
-    public List<Tickets> GetList(Expression<Func<Tickets, bool>> Criterio)
+    public List<Tickets> Listar (Expression<Func<Tickets, bool>> Criterio)
     {
         return _contexto.Tickets
             .Where(Criterio)
