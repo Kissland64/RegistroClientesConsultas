@@ -22,25 +22,33 @@ namespace RegistroClientesConsultas.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Celular")
+                        .IsRequired()
+                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
+                        .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
+                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RNC")
                         .IsRequired()
+                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ClienteId");
@@ -64,6 +72,21 @@ namespace RegistroClientesConsultas.Migrations
                     b.HasKey("PrioridadId");
 
                     b.ToTable("Prioridades");
+                });
+
+            modelBuilder.Entity("Tickets", b =>
+                {
+                    b.Property<int>("TicketsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TicketsId");
+
+                    b.ToTable("Tickets");
                 });
 #pragma warning restore 612, 618
         }

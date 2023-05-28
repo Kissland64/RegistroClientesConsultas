@@ -16,12 +16,12 @@ namespace RegistroClientesConsultas.Migrations
                 {
                     ClienteId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Nombre = table.Column<string>(type: "TEXT", nullable: false),
-                    Telefono = table.Column<string>(type: "TEXT", nullable: true),
-                    Celular = table.Column<string>(type: "TEXT", nullable: true),
-                    RNC = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Direccion = table.Column<string>(type: "TEXT", nullable: false)
+                    Nombre = table.Column<string>(type: "TEXT", maxLength: 15, nullable: false),
+                    Telefono = table.Column<string>(type: "TEXT", maxLength: 15, nullable: false),
+                    Celular = table.Column<string>(type: "TEXT", maxLength: 15, nullable: false),
+                    RNC = table.Column<string>(type: "TEXT", maxLength: 15, nullable: false),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
+                    Direccion = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,6 +41,19 @@ namespace RegistroClientesConsultas.Migrations
                 {
                     table.PrimaryKey("PK_Prioridades", x => x.PrioridadId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Tickets",
+                columns: table => new
+                {
+                    TicketsId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tickets", x => x.TicketsId);
+                });
         }
 
         /// <inheritdoc />
@@ -51,6 +64,9 @@ namespace RegistroClientesConsultas.Migrations
 
             migrationBuilder.DropTable(
                 name: "Prioridades");
+
+            migrationBuilder.DropTable(
+                name: "Tickets");
         }
     }
 }
