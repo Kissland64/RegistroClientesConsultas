@@ -1,127 +1,159 @@
 @page "/RegistroClientes"
 @page "/RegistroClientes/{ClienteId:int}"
-@using System.ComponentModel.DataAnnotations
-@inject ClientesBLL clientesBLL
 
-<h3></h3>
+@inject ClientesBLL ClientesBLL
 
-<EditForm Model="cliente">
-    
-    <div class = "card">
+<EditForm model = "Clientes" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
 
-        <div class = "card-header">
-            <h1>Registro de clientes</h1>
-        </div>
-        <div class = "card-body">
+    <div class ="container">
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <h3>Registro de Clientes.</h3>
+            </div>
+            <div class=card-body>
 
-            <div class="input-group mb-3">
-            <InputNumber @bind-Value = "cliente.ClienteId" class="form-control" />
-            <button @onclick = "Buscar" class="btn btn-outline-secondary oi oi-magnifying-glass" type="button" id="button-addon2"></button>
-            </div>
-        
-            <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <InputText type="text" class="form-control" @bind-Value="@cliente.Nombre" />
-                <ValidationMessage For="@(() => cliente.Nombre)" />
-            </div>
-            <div class="form-group">
-                <label for="telefono">Telefono:</label>
-                <InputText type="text" class="form-control" @bind-Value="@cliente.Telefono" />
-                <ValidationMessage For="@(() => cliente.Telefono)" />
-            </div>
-            <div class="form-group">
-                <label for="celular">Celular:</label>
-                <InputText type="text" class="form-control" @bind-Value="@cliente.Celular" />
-                <ValidationMessage For="@(() => cliente.Celular)" />
-            </div>
-            <div class="form-group">
-                <label for="rnc">RNC:</label>
-                <InputText type="text" class="form-control" @bind-Value="@cliente.RNC" />
-                <ValidationMessage For="@(() => cliente.RNC)" />
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <InputText type="email" class="form-control" @bind-Value="@cliente.Email" />
-                <ValidationMessage For="@(() => cliente.Email)" />
-            </div>
-            <div class="form-group">
-                <label for="direccion">Dirección:</label>
-                <InputText type="text" class="form-control" @bind-Value="@cliente.Direccion" />
-                <ValidationMessage For="@(() => cliente.Direccion)" />
-    </div>
+                <div class= "col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-4">
+                    <label>ID Cliente:</label>
+                    <div class="input-group mb-3">
+                        <InputNumber @bind-Value ="cliente.ClienteId" class="form-control" aria-describedby="BotonBuscar"/>
+                        <button @onclick="Buscar" class="btn btn-outline-primary" type="button" id="BotonBuscar"><i class ="oi oi-magnifying-glass"/></button>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label" for="Nombres">Nombres:</label>
+                    <InputText @bind-Value="cliente.Nombre" class="form-control" />
+                    <ValidationMessage For="@(() => cliente.Nombre)" />
+                </div>
 
-        </div>
-        <div class="card-footer">
-            <button type="button" class="btn btn-outline-primary" @onclick="Nuevo">Nuevo <i class="oi oi-file"/></button>
+                <div class="mb-3">
+                    <label class="form-label" for="Telefono">Telefono:</label>
+                    <InputText @bind-Value="cliente.Telefono" class="form-control"/>
+                    <ValidationMessage For="@(() => cliente.Telefono)" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="Celular">Celular:</label>
+                    <InputText @bind-Value="cliente.Celular" class="form-control"/>
+                    <ValidationMessage For="@(() => cliente.Celular)" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="RNC">RNC:</label>
+                    <InputText @bind-Value="cliente.RNC" class="form-control"/>
+                    <ValidationMessage For="@(() => cliente.RNC)" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="Email">Email:</label>
+                    <InputText @bind-Value="cliente.Email" class="form-control"/>
+                    <ValidationMessage For="@(() => cliente.Email)" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="Direccion">Direccion:</label>
+                    <InputText @bind-Value="cliente.Direccion" class="form-control"/>
+                    <ValidationMessage For="@(() => cliente.Direccion)" />
+                </div>
+
+            </div>
+            <div class="card-footer d-flex justify-content-center">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-primary" @onclick="Nuevo">Nuevo <i class="oi oi-file"/></button>
                     <button type="submit" class="btn btn-outline-success">Guardar <i class="oi oi-document"/></button>
                     <button type="button" class="btn btn-outline-danger"@onclick="Eliminar">Eliminar <i class="oi oi-trash"/></button>
-            
+                </div>
+            </div>
         </div>
     </div>
 
 
 </EditForm>
+<label>@mensaje</label>
 
-@code {
+@code
+{
     [Parameter]
+
     public int ClienteId { get; set; }
-    private List<Clientes> clientes = new List<Clientes>();
-    private Clientes cliente = new Clientes();
 
-    private void AgregarCliente()
+    public Clientes cliente { get; set; } = new Clientes();
+
+    public string mensaje = string.Empty;
+
+    protected override void OnInitialized()
     {
-        if (clientesBLL.Guardar(cliente)){
-            Nuevo();
+        if(ClienteId > 0)
+        {
+            cliente.ClienteId = ClienteId;
+            Buscar();
         }
-    }
-
-    private void Eliminar()
-    {
-        if (clientesBLL.Eliminar(cliente)){
-            Nuevo();
-        }
-    }
-
-    private void Nuevo()
-    {
-        cliente = new Clientes();
     }
 
     public void Buscar()
     {
-        var ClienteEncontrado = clientesBLL.Buscar(cliente.ClienteId);
-        if(ClienteEncontrado != null){
-            cliente = ClienteEncontrado;
+        var clienteEncontrado = ClientesBLL.Buscar(cliente.ClienteId);
+
+        if(clienteEncontrado != null)
+        {
+            this.cliente = clienteEncontrado;
+        }
+        else
+        {
+            mensaje = "no se ha encontrado ese cliente";
         }
     }
 
-    private bool ValidarCliente(Clientes cliente)
+    public void Guardar()
     {
-        var context = new ValidationContext(cliente, serviceProvider: null, items: null);
-        var results = new List<ValidationResult>();
-
-        if (!Validator.TryValidateObject(cliente, context, results, validateAllProperties: true))
+        if(Validar())
         {
-            foreach (var validationResult in results)
+             
+            if(ClientesBLL.Guardar(this.cliente))
             {
-                Console.WriteLine(validationResult.ErrorMessage);
+                mensaje= "Se ha guardado con exito";
+                Nuevo();
             }
-
-            return false;
-        }
-
-        if (clientes.Any(c => c.Nombre == cliente.Nombre))
-        {
-            Console.WriteLine("Ya existe un cliente con el mismo nombre.");
-            return false;
-        }
-
-        if (clientes.Any(c => c.RNC == cliente.RNC))
-        {
-            Console.WriteLine("Ya existe un cliente con el mismo RNC.");
-            return false;
+            else
+            {
+                mensaje = "Error al momento de guardar, intentelo de nuevo";
+            }
         }
         else
-            return true;
+        {
+            mensaje = "Por favor rellene los campos";
+        }
+    }
+
+    public bool Validar()
+    {
+        return cliente.Nombre != null && cliente.Telefono != null && cliente.Celular != null &&
+        cliente.RNC != null && cliente.Direccion != null && cliente.Email != null;
+    }
+
+    public void Nuevo()
+    {
+        this.cliente = new Clientes();
+        mensaje = string.Empty;
+    }
+
+    public void Eliminar()
+    {
+        if(Validar()){
+
+            if(ClientesBLL.Eliminar(this.cliente))
+            {
+                mensaje="Se ha eliminado correctamente";
+                Nuevo();
+            }
+            else
+            {
+                mensaje="Error al eliminar, intentelo de nuevo";
+            }
+            
+        }else{
+            mensaje = "No hay nada por eliminar";
+        }
     }
 }
