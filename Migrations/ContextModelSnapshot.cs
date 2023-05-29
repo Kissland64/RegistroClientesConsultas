@@ -24,32 +24,26 @@ namespace RegistroClientesConsultas.Migrations
 
                     b.Property<string>("Celular")
                         .IsRequired()
-                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
-                        .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RNC")
                         .IsRequired()
-                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ClienteId");
@@ -73,6 +67,21 @@ namespace RegistroClientesConsultas.Migrations
                     b.HasKey("PrioridadId");
 
                     b.ToTable("Prioridades");
+                });
+
+            modelBuilder.Entity("Sistemas", b =>
+                {
+                    b.Property<int>("SistemaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("SistemaId");
+
+                    b.ToTable("Sistemas");
                 });
 
             modelBuilder.Entity("Tickets", b =>
