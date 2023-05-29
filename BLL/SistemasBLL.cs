@@ -12,7 +12,6 @@ public class SistemasBLL
 
     public bool Guardar(Sistemas Sistema)
     {
-            // busca si el registro existe, si existe lo modifica y si no lo inserta
         if (!Existe(Sistema.SistemaId))
             return Insertar(Sistema);
         else
