@@ -58,4 +58,11 @@ public class SistemasBLL
             .AsNoTracking()
             .ToList();
     }
+
+    public List<Sistemas> Listar(Expression<Func<Sistemas, bool>> Criterio){
+        return _contexto.Sistemas
+            .Where(Criterio)
+            .AsNoTracking()
+            .ToList();
+    }
 }

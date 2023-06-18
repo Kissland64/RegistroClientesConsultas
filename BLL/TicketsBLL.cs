@@ -37,25 +37,24 @@ public class TicketsBLL
         return cantidad > 0;
     }
 
-    public bool Eliminar(Tickets Ticket)
+    public bool Eliminar(Tickets tickets)
     {
-        _contexto.Tickets.Remove(Ticket);
-        int cantidad = _contexto.SaveChanges();
-        return cantidad > 0;
+        _contexto.Tickets.Remove(tickets);
+        int eliminado = _contexto.SaveChanges();
+        _contexto.Entry(tickets).State = EntityState.Detached;
+        return eliminado > 0;
     }
 
-    public Tickets? Buscar(int TicketsId)
+    public Tickets? Buscar(int TicketId)
     {
-        return _contexto.Tickets
+        return _contexto.Tickets.Include(det => det.TicketsDetalles).Where(Ticket => Ticket.TicketsId == TicketId)
             .AsNoTracking()
-            .FirstOrDefault(s => s.TicketsId == TicketsId);
+            .SingleOrDefault();
     }
 
-    public List<Tickets> Listar (Expression<Func<Tickets, bool>> Criterio)
-    {
-        return _contexto.Tickets
-            .Where(Criterio)
+    public List<Tickets> Listar(Expression<Func<Tickets, bool>> Criterio){
+        return _contexto.Tickets.Include(det => det.TicketsDetalles)
             .AsNoTracking()
-            .ToList();
+            .Where(Criterio).ToList();
     }
 }

@@ -14,7 +14,7 @@ namespace RegistroClientesConsultas.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.7");
 
             modelBuilder.Entity("Clientes", b =>
                 {
@@ -117,6 +117,45 @@ namespace RegistroClientesConsultas.Migrations
                     b.HasKey("TicketsId");
 
                     b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("TicketsDetalles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Emisor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Mensaje")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("TicketsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TicketsId");
+
+                    b.ToTable("TicketsDetalles");
+                });
+
+            modelBuilder.Entity("TicketsDetalles", b =>
+                {
+                    b.HasOne("Tickets", null)
+                        .WithMany("TicketsDetalles")
+                        .HasForeignKey("TicketsId");
+                });
+
+            modelBuilder.Entity("Tickets", b =>
+                {
+                    b.Navigation("TicketsDetalles");
                 });
 #pragma warning restore 612, 618
         }

@@ -74,6 +74,32 @@ namespace RegistroClientesConsultas.Migrations
                 {
                     table.PrimaryKey("PK_Tickets", x => x.TicketsId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "TicketsDetalles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TicketId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Emisor = table.Column<string>(type: "TEXT", nullable: false),
+                    Mensaje = table.Column<string>(type: "TEXT", nullable: false),
+                    TicketsId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketsDetalles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketsDetalles_Tickets_TicketsId",
+                        column: x => x.TicketsId,
+                        principalTable: "Tickets",
+                        principalColumn: "TicketsId");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TicketsDetalles_TicketsId",
+                table: "TicketsDetalles",
+                column: "TicketsId");
         }
 
         /// <inheritdoc />
@@ -87,6 +113,9 @@ namespace RegistroClientesConsultas.Migrations
 
             migrationBuilder.DropTable(
                 name: "Sistemas");
+
+            migrationBuilder.DropTable(
+                name: "TicketsDetalles");
 
             migrationBuilder.DropTable(
                 name: "Tickets");
